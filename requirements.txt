@@ -1,0 +1,6 @@
+torch
+transformers
+whisper
+moviepy
+opencv-python
+
