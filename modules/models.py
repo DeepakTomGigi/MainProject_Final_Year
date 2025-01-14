@@ -57,14 +57,14 @@ def transcribe_audio(video_path, model):
 
 
 
-def load_blip_model():
-    """
-    Loads the BLIP model and processor for image captioning.
+# def load_blip_model():
+#     """
+#     Loads the BLIP model and processor for image captioning.
 
-    Returns:
-        tuple: The BLIP model and processor.
-    """
-    print("Loading BLIP model for image captioning...")
-    blip_model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
-    blip_processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
-    return blip_model, blip_processor
+#     Returns:
+#         tuple: The BLIP model and processor.
+#     """
+#     print("Loading BLIP model for image captioning...")
+#     blip_model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
+#     blip_processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
+#     return blip_model, blip_processor
