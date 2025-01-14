@@ -1,5 +1,7 @@
 import os
 from groq import Groq
+import cv2
+import base64
 
 # def combine_modalities(frame_descriptions, audio_transcript):
 #     """
@@ -45,3 +47,58 @@ def summarize_with_groq(audio_transcript, api_key):
     except Exception as e:
         print(f"Error while generating summary with Groq: {e}")
         return "Summary generation failed."
+
+def get_keyframe_descriptions(keyframes, api_key):
+    """
+    Generates detailed descriptions for each keyframe using Groq's API.
+
+    Args:
+        keyframes (list): A list of tuples, where each tuple contains (frame_index, frame_image).
+        api_key (str): Groq API key for authentication.
+
+    Returns:
+        dict: A dictionary where keys are frame indices and values are the detailed descriptions.
+    """
+    client = Groq(api_key=api_key)
+    descriptions = {}
+
+    for frame_index, frame_image in keyframes:
+        # Convert the frame to a base64 URL or upload it to a hosting service to get an accessible URL
+        _, buffer = cv2.imencode(".jpg", frame_image)
+        image_bytes = base64.b64encode(buffer).decode('utf-8')
+        image_url = f"data:image/jpeg;base64,{image_bytes}"  # Example for inline image URL
+
+        try:
+            completion = client.chat.completions.create(
+                model="llama-3.2-11b-vision-preview",
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "Give a detailed description of the image including the text present in it.\n"
+                            },
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": image_url
+                                }
+                            }
+                        ]
+                    }
+                ],
+                temperature=1,
+                max_tokens=1024,
+                top_p=1,
+                stream=False,
+                stop=None,
+            )
+            description = completion.choices[0].message.content
+            descriptions[frame_index] = description
+            print(f"Generated description for frame {frame_index}")
+        except Exception as e:
+            print(f"Error generating description for frame {frame_index}: {e}")
+            descriptions[frame_index] = "Error generating description."
+
+    return descriptions
