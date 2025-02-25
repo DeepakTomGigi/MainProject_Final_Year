@@ -77,7 +77,8 @@ def get_keyframe_descriptions(keyframes, api_key):
                         "content": [
                             {
                                 "type": "text",
-                                "text": "Give a detailed description of the image including the text present in it.\n"
+                                # "text": "Examine the image and provide a detailed summary, describing key objects, people, actions, and interactions. Include any visible text along with its context and significance. Highlight the overall scenario and message conveyed, ensuring the description integrates both visual and textual elements comprehensively and accurately.\n"
+                                "text": "You are generating a detailed summary of the content present in the image by analyzing the topic of discussion in the image"
                             },
                             {
                                 "type": "image_url",
