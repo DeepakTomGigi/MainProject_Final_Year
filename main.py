@@ -38,6 +38,3 @@ print("\n\n---------------------SUMMARY-------------------------\n\n")
 print(final_summary)
 
 generate_presentation(final_summary)
-
-# print("\n\n---------------------SUMMARY-------------------------\n\n")
-# print(final_summary)
