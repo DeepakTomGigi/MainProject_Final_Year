@@ -4,21 +4,23 @@ from modules.data_processing import detect_keyframes
 from modules.visualization import save_keyframes
 from modules.models import load_whisper_model,transcribe_audio
 from modules.summarization import summarize_with_groq,get_keyframe_descriptions
-VIDEO_PATH = "sample/example2.mp4"
+from modules.presentation import generate_presentation
+
+VIDEO_PATH = "sample/whatisml.mp4"
 OUTPUT_FOLDER = "outputs/keyframes"
 load_dotenv()
 api = os.getenv("GROQ_API_KEY")
 
-# keyframes = detect_keyframes(VIDEO_PATH)
-# keyframes_description = get_keyframe_descriptions(keyframes,api_key=api)
-# for i in keyframes_description:
-#     print()
-#     print(f"Description of the keyframe{i}:")
-#     print("---------------------------------")
-#     print(keyframes_description[i])
-#     print("---------------------------------------------------------------------------------------------------------")
-#     print()
-# save_keyframes(keyframes, OUTPUT_FOLDER)
+keyframes = detect_keyframes(VIDEO_PATH)
+keyframes_description = get_keyframe_descriptions(keyframes[:5],api_key=api)
+final_prompt = "The descriptions given below are the description of each keyframes of the video.some descriptions might be similar so learn only necessary details without repitition.\n"
+
+i = 1
+for descriptions in keyframes_description:
+    final_prompt += "Keyframe "+str(i)+":" + keyframes_description[descriptions] + "\n"
+    i+=1
+    
+save_keyframes(keyframes, OUTPUT_FOLDER)
 # display_keyframes(keyframes)
 
 # Load the models
@@ -27,12 +29,15 @@ whisper_model = load_whisper_model("base")
 # Transcribe audio
 audio_transcript = transcribe_audio(VIDEO_PATH, whisper_model)
 
-# print("### Audio Transcript ###")
-# print(audio_transcript)
+final_prompt += "The text below will be the audio transcript of the video\n"
+final_prompt += audio_transcript
+# print(final_prompt)
 
-audio_summary = summarize_with_groq(audio_transcript,api_key=api)
-print("---------------------AUDIO BASED SUMMARY-------------------------")
-print(audio_summary)
-# Verify if models are loaded
-# print("Models loaded successfully!")
-# print("check for git")
+final_summary = summarize_with_groq(final_prompt,api_key=api)
+print("\n\n---------------------SUMMARY-------------------------\n\n")
+print(final_summary)
+
+generate_presentation(final_summary)
+
+# print("\n\n---------------------SUMMARY-------------------------\n\n")
+# print(final_summary)

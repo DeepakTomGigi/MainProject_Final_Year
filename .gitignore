@@ -2,6 +2,7 @@
 venv/
 outputs/
 temp_audio.wav
+test.py
 # Ignore Python cache files
 __pycache__/
 *.pyc
