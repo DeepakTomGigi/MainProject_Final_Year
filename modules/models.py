@@ -1,5 +1,5 @@
 import whisper
-import moviepy
+import os
 from transformers import BlipProcessor, BlipForConditionalGeneration
 import torch
 
@@ -15,7 +15,8 @@ def load_whisper_model(model_size="base"):
         model: The loaded Whisper model.
     """
     print(f"Loading Whisper model: {model_size}")
-    model = whisper.load_model(model_size,device="cuda")
+    device = "cuda" if torch.cuda.is_available() else "cpu" 
+    model = whisper.load_model(model_size,device=device)
     return model
 
 from moviepy import VideoFileClip
@@ -48,6 +49,7 @@ def transcribe_audio(video_path, model):
     Returns:
         str: Transcribed text.
     """
+    os.environ["PATH"] += os.pathsep + r"C:\ffmpeg\ffmpeg-master-latest-win64-gpl-shared\bin"
     video_clip = VideoFileClip(video_path)
     audio_path = "temp_audio.wav"
     video_clip.audio.write_audiofile(audio_path)

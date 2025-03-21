@@ -1,3 +1,4 @@
+import os
 from pptx import Presentation
 from pptx.util import Inches, Pt
 
@@ -94,9 +95,13 @@ def generate_presentation(summary_text):
             text_frame.text = current_text.strip()
 
     # Save the presentation
-    output_filename = "outputs/generated_presentation.pptx"
+    output_dir = "static/presentations"
+    os.makedirs(output_dir, exist_ok=True)
+    output_filename = os.path.join(output_dir, "generated_presentation.pptx")
+
     presentation.save(output_filename)
     print(f"Presentation saved as {output_filename}!")
+    return output_filename
 
 # Generate the presentation from the input text
 # generate_presentation(input_text)

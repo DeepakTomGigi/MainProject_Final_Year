@@ -6,7 +6,7 @@ from modules.models import load_whisper_model,transcribe_audio
 from modules.summarization import summarize_with_groq,get_keyframe_descriptions
 from modules.presentation import generate_presentation
 
-VIDEO_PATH = "sample/whatisml.mp4"
+VIDEO_PATH = "sample/example2.mp4"
 OUTPUT_FOLDER = "outputs/keyframes"
 load_dotenv()
 api = os.getenv("GROQ_API_KEY")

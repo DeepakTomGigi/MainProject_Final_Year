@@ -64,3 +64,6 @@ def detect_keyframes(video_path, motion_threshold=0.2, hist_threshold=50, min_sc
 
     video.release()
     return keyframes
+
+
+
