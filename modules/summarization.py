@@ -72,7 +72,7 @@ def get_keyframe_descriptions(keyframes, api_key):
 
         try:
             completion = client.chat.completions.create(
-                model="llama-3.2-11b-vision-preview",
+                model="llama-3.2-90b-vision-preview",
                 messages=[
                     {
                         "role": "user",
